@@ -19,10 +19,10 @@ class GenyInstanceLookupService {
   }
 
   async _getRelevantInstances(recipeUUID) {
-    const takenDevices = await this.deviceRegistry.getRegisteredDevices();
+    const takenDevices = await this.deviceRegistry.getRegisteredInstanceUUIDs();
     const isRelevant = (instance) =>
       instance.recipeUUID === recipeUUID && // TODO isn't this redundant, as we check for familiality?
-      !instance.isTerminated() &&
+      !instance.isTerminated() && // TODO Add use cases for states "DELETING", "OFFLINE"
       this.instanceNaming.isFamilial(instance.name) &&
       !takenDevices.includes(instance.uuid);
 
